@@ -15,7 +15,6 @@ class NoteManager:
                      title TEXT NOT NULL,
                      content TEXT,
                      category TEXT,
-                     tags TEXT,
                      created_at TIMESTAMP)''')
         conn.commit()
         conn.close()
@@ -24,10 +23,10 @@ class NoteManager:
         conn = sqlite3.connect(self.db_path)
         c = conn.cursor()
         c.execute("""INSERT INTO notes 
-                    (title, content, category, tags, created_at) 
-                    VALUES (?, ?, ?, ?, ?)""",
+                    (title, content, category, created_at) 
+                    VALUES (?, ?, ?, ?)""",
                  (note.title, note.content, note.category, 
-                  ','.join(note.tags), note.created_at))
+                  note.created_at))
         conn.commit()
         conn.close()
 

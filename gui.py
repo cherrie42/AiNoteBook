@@ -231,6 +231,11 @@ class NoteBookApp:
             messagebox.showerror("错误", f"加载笔记详情失败：{str(e)}")
 
     def new_note(self):
+        # 清除当前选中的笔记
+        for item in self.note_list.selection():
+            self.note_list.selection_remove(item)
+        
+        # 清空输入框
         self.title_entry.delete(0, tk.END)
         self.content_text.delete(1.0, tk.END)
         self.category_entry.delete(0, tk.END)
