@@ -15,6 +15,7 @@ class NoteManager:
                      title TEXT NOT NULL,
                      content TEXT,
                      category TEXT,
+                     tags TEXT,
                      created_at TIMESTAMP)''')
         conn.commit()
         conn.close()
@@ -22,8 +23,11 @@ class NoteManager:
     def add_note(self, note):
         conn = sqlite3.connect(self.db_path)
         c = conn.cursor()
-        c.execute("INSERT INTO notes (title, content, category, created_at) VALUES (?, ?, ?, ?)",
-                 (note.title, note.content, note.category, note.created_at))
+        c.execute("""INSERT INTO notes 
+                    (title, content, category, tags, created_at) 
+                    VALUES (?, ?, ?, ?, ?)""",
+                 (note.title, note.content, note.category, 
+                  ','.join(note.tags), note.created_at))
         conn.commit()
         conn.close()
 
@@ -42,3 +46,20 @@ class NoteManager:
         note = c.fetchone()
         conn.close()
         return note
+
+    def update_note(self, note_id, title, content, category):
+        conn = sqlite3.connect(self.db_path)
+        c = conn.cursor()
+        c.execute("""UPDATE notes 
+                    SET title = ?, content = ?, category = ? 
+                    WHERE id = ?""",
+                 (title, content, category, note_id))
+        conn.commit()
+        conn.close()
+
+    def delete_note(self, note_id):
+        conn = sqlite3.connect(self.db_path)
+        c = conn.cursor()
+        c.execute("DELETE FROM notes WHERE id = ?", (note_id,))
+        conn.commit()
+        conn.close()
