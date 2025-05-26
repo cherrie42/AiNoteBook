@@ -445,11 +445,3 @@ class NoteBookApp:
             
         except Exception as e:
             messagebox.showerror("错误", f"删除笔记失败：{str(e)}")
-
-def main():
-    root = tk.Tk()
-    app = NoteBookApp(root)
-    root.mainloop()
-
-if __name__ == "__main__":
-    main()
